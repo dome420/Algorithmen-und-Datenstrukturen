@@ -149,6 +149,7 @@ TEST_CASE("List Testing", "[List]")
 
     SECTION("Vertauschen von zwei Elementen und testen der Zeiger")
     {
+       
         test_list.insertFront(5);
         test_list.insertFront(7);
         test_list.insertFront(9);

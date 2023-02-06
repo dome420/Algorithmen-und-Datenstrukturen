@@ -53,7 +53,7 @@ List::~List()
     */
 
     
-    while (head_tail->next != head_tail)
+    while (head_tail->next != head_tail && list_size > 0)
     {
         Node* current = head_tail->next;
         head_tail->next = current->next;
@@ -161,12 +161,14 @@ void List::insertBack(int value)
 
 void List::insertBack(List& _List)
 {
-    //ToDo
+    
 /*
-    Einfuegen der Liste _List am Ende einer vorhandenen Liste
-	Die einzufuegenden Knoten werden uebernommen (nicht kopiert)
-	Die einzufuegende Liste _List ist anschließend leer.
-	Es darf keine Schleife und kein new benutzt werden. 
+    TODO: Einfuegen der Liste _List am Ende einer vorhandenen Liste
+        - Die einzufuegenden Knoten werden uebernommen (nicht kopiert)
+	    - Die einzufuegende Liste _List ist anschließend leer.
+	    - Es darf keine Schleife und kein new benutzt werden. 
+        - Es wird ein Objekt übergeben in dem Knoten vorhanden sein können.Diese Knoten (koplette Kette) werden an den Ende der Liste (this) übertragen,
+        ohne sie zu kopieren! Die Liste _List ist danach leer, aber vorhanden.
 */
 
 /*
@@ -174,11 +176,6 @@ void List::insertBack(List& _List)
 */
 	if (head_tail == _List.head_tail) return;
 
-/*
-	Es wird ein Objekt übergeben in dem Knoten vorhanden sein können.
-	Diese Knoten (koplette Kette) werden an den Ende der Liste (this) übertragen ohne sie zu kopieren!
-	Die Liste _List ist danach leer, aber vorhanden.
-*/
     //Summe der beiden Liste = Gesamtgröße
     this->list_size = this->list_size + _List.list_size;
 
@@ -203,10 +200,10 @@ bool List::getFront(int& value)
 {
     
 /*  
-    TODO: Entnehmen des Knotens am Anfang der Liste
-	der Wert wird als Parameter zurueckgegeben
-	der Knoten wird entnommen
-	im Fehlerfall wird false zurückgegeben
+    TODO: Entnehmen des Knotens am Anfang der Liste der Wert wird als Parameter zurueckgegeben der Knoten wird entnommen.im Fehlerfall wird false zurückgegeben
+        - Der Wert des vorderen Knotens wird rückgegeben und der Knoten gelöscht.
+        - Die Methode del(value) darf nicht zum löschen benutzt werden.
+	
 */
 
 /*
@@ -214,11 +211,7 @@ bool List::getFront(int& value)
 */
 	if (!list_size) return false;	
 
-/*
-	Der Wert des vorderen Knotens wird rückgegeben und der Knoten gelöscht.
-	Die Methode del(value) darf nicht zum löschen benutzt werden.
-*/
-        // Zurückgeben des Knotes per Parameter
+
         value = head_tail->next->value;
 
         Node* tmp = head_tail->next;
@@ -252,7 +245,7 @@ bool List::getBack(int& value)
 	Die Methode del(value) darf nicht zum löschen benutzt werden.
 */
    
-        value = (int)head_tail->prev->value;
+        value = head_tail->prev->value;
 
         Node *tmp = head_tail->prev;
         tmp->prev->next = head_tail;
@@ -266,24 +259,22 @@ bool List::getBack(int& value)
 
 bool List::del(int value)
 {
-/*  
-    TODO :Loeschen eines gegebenen Knotens
-	im Fehlerfall wird false zurückgegeben
-*/
+ 
+//  TODO :Loeschen eines gegebenen Knotens mit dem Wert = Value.Im Fehlerfall wird false zurückgegeben
+
 
 /*
     gleiches Objekt -> keine Aktion
 */
 	if (!list_size) return false;
 
-/*
-	Löschen des Knotens mit dem Wert value 
-*/
+
     Node* current = head_tail->next;
 
     while (current != head_tail)
     {
-        if (current->value == value) {
+        if (current->value == value) 
+        {
             
             current->prev->next = current->next;
             current->next->prev = current->prev;
@@ -301,24 +292,22 @@ bool List::del(int value)
 
 bool List::search(int value)
 {
-    //ToDo
-/*
-    suchen eines Knotens
-	nicht gefunden -> Rueckgabe: false
-*/
+    
+
+//  TODO: suchen eines Knotens nicht gefunden -> Rueckgabe: false
+
 
 /*
     leere Liste -> keine Aktion
 */
 	if (!list_size) return false; 
 
-/*
-	suchen ob ein Knoten mit dem Wert value existiert.
-*/
-   
+
     Node* current = head_tail->next;
-    while (current != head_tail) {
-        if (current->value == value) {
+    while (current != head_tail) 
+    {
+        if (current->value == value)
+        {
             return true;
         }
         current = current->next;
@@ -330,9 +319,9 @@ bool List::swap(int value1, int value2)
 {
     
 /*  
-    TODO: Vertauschen von zwei Knoten
-	Dabei werden die Zeiger der Knoten und deren Nachbarn veraendert.
-	im Fehlerfall wird false zurueckgegeben
+    TODO: Vertauschen von zwei Knoten Dabei werden die Zeiger der Knoten und deren Nachbarn veraendert.im Fehlerfall wird false zurueckgegeben  
+    Vertauschen von zwei Knoten mit dem Wert value1 und dem Wert value2.Es duerfen nicht nur einfach die Werte in den Knoten getauscht werden!
+    Die Knoten sind in der Kette umzuhaengen.
 */
 
 /*
@@ -340,47 +329,103 @@ bool List::swap(int value1, int value2)
 */
 	if (list_size < 2) return false; 
 
-/*
-	Vertauschen von zwei Knoten mit dem Wert value1 und dem Wert value2.
-	Es duerfen nicht nur einfach die Werte in den Knoten getauscht werden!
-	Die Knoten sind in der Kette umzuhaengen.
-*/
+
     if (list_size > 1) {
-        Node* search_value1 = head_tail->next;
-        Node* search_value2 = head_tail->next;
+        Node* NodeV1 = head_tail->next;
+        Node* NodeV2 = head_tail->next;
 
-
-        while (search_value1 != head_tail) {
-            search_value1 = search_value1->next;
-            if (search_value1->value == value1) {
-                break;
-            }
-
+        // Traviersiert die Liste um Node mit Value1 und Node mit Value2 zu finden.
+        while (NodeV1 != head_tail) 
+        { 
+            if (NodeV1->value == value1) break;
+            NodeV1 = NodeV1->next;
         }
-        while (search_value2 != head_tail) {
-            search_value2 = search_value2->next;
-            if (search_value2->value == value2) {
-                break;
-            }
+        while (NodeV2 != head_tail) 
+        {  
+            if (NodeV2->value == value2) break;
+            NodeV2 = NodeV2->next;
         }
 
-        Node* tmp = search_value2->prev;
-        Node* tmp2 = search_value2->next;
+        /* 
+        *  Liste im Start zustand:  4-9-7-5-3-2-4-1
+        *  1. Swap: (7,2) -> Liste nach Swap : 4-9-2-5-3-7-4-1   
+        *  2. Swap: (4,5) -> Liste nach Swap : 5-9-2-4-3-7-4-1   -> 1. Parameter 4 ist head->next , 2.Parameter Mitte
+        *  3. Swap: (1,3) -> Liste nach Swap : 5-9-2-4-1-7-4-3   -> 1. Parameter 1 ist head->prev , 2.Parameter 3 Mitte
+        *  4. Swap: (4,2) -> Liste nach Swap : 5-9-4-2-1-7-4-3
+        */
 
-        // Tauschen
-        search_value1->prev->next = search_value2;
-        search_value1->next->prev = search_value2;
+        // Fall 1: Zwei Knoten aus der Mitte, nicht nebeneinander
+        if ((NodeV1->prev != head_tail && NodeV1->next != head_tail) && (NodeV2->prev != head_tail && NodeV2->next != head_tail) && (NodeV1->next != NodeV2)) 
+        {
+            Node* save_connection_prev = NodeV1->prev;
+            Node* save_connection_next = NodeV1->next;
+
+            NodeV1->prev->next = NodeV2;
+            NodeV1->next->prev = NodeV2;
+
+            NodeV2->prev->next = NodeV1;
+            NodeV2->next->prev = NodeV1;
+
+            NodeV1->next = NodeV2->next;
+            NodeV1->prev = NodeV2->prev;
+
+            NodeV2->next = save_connection_next;
+            NodeV2->prev = save_connection_prev;
+            return true;
+        }
+        //Fall 2: Erster Knoten mit einem aus der Mitte, nicht nebeneinander
+        else if (NodeV1->prev == head_tail && NodeV2->next != head_tail)
+        {
+
+            Node* save_connection_prev = NodeV2->prev;
+            Node* save_connection_next = NodeV2->next;
+
+            NodeV2->next->prev = NodeV1;
+            NodeV2->prev->next = NodeV1;
+
+            NodeV1->next->prev = NodeV2;
+            NodeV2->next = NodeV1->next;
+
+            NodeV1->next = save_connection_next;
+            NodeV1->prev = save_connection_prev;
+
+            head_tail->next = NodeV2;
+            NodeV2->prev = head_tail;
+            return true;
+        }
+        // Fall 3: Letzter Knoten mit einem aus der Mitte, nicht nebeneinander
+        else if (NodeV1->next == head_tail && NodeV2->prev != head_tail)
+        {
+            Node* save_connection_prev = NodeV2->prev;
+            Node* save_connection_next = NodeV2->next;
+
+            NodeV2->next->prev = NodeV1;
+            NodeV2->prev->next = NodeV1;
+
+            NodeV1->prev->next = NodeV2;
+            NodeV2->prev = NodeV1->prev;
+
+            NodeV1->next = save_connection_next;
+            NodeV1->prev = save_connection_prev;
+
+            head_tail->prev = NodeV2;
+            NodeV2->next = head_tail;
+            return true;
+        }
+        //Fall 4: Zwei Knoten aus der Mitte, nebeneinander
+        else if (NodeV1->next == NodeV2 && NodeV2->prev == NodeV1)
+        {
+           
+            NodeV2->next = NodeV1->next;
+            NodeV1->prev = NodeV2->prev;
+            NodeV2->prev->next = NodeV1;
+            NodeV1->next->prev = NodeV2;
+
+            NodeV2->prev = NodeV1;
+            NodeV1->next = NodeV2;
+            return true;
+        }
         
-        search_value2->next = search_value1->next;
-        search_value2->prev = search_value1->prev;
-
-        tmp->next = search_value1;
-        search_value1->prev = tmp;
-        search_value1->next = tmp2;
-        tmp2->prev = search_value1;
-
-        delete tmp, tmp2;
-        return true;
     }
     return false;
 }
