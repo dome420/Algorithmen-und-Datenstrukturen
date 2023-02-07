@@ -180,15 +180,14 @@ void List::insertBack(List& _List)
     this->list_size = this->list_size + _List.list_size;
 
     // Zusammenführen der Liste
-    _List.head_tail->next->prev = this->head_tail->prev;
     this->head_tail->prev->next = _List.head_tail->next;
+    _List.head_tail->next->prev = this->head_tail->prev;
 
-    //Neuen Letzten Knoten Festlegen
-    this->head_tail->prev = _List.head_tail->next;
-    _List.head_tail->next->next = this->head_tail;
+    this->head_tail->prev = _List.head_tail->prev;
+    _List.head_tail->prev->next = this->head_tail;
 
-    _List.head_tail->next = head_tail;
-    _List.head_tail->prev = head_tail;
+    _List.head_tail->next = _List.head_tail;
+    _List.head_tail->prev = _List.head_tail;
 
     _List.list_size = 0;
 
@@ -355,7 +354,7 @@ bool List::swap(int value1, int value2)
         */
 
         // Fall 1: Zwei Knoten aus der Mitte, nicht nebeneinander
-        if ((NodeV1->prev != head_tail && NodeV1->next != head_tail) && (NodeV2->prev != head_tail && NodeV2->next != head_tail) && (NodeV1->next != NodeV2)) 
+        if ((NodeV1->prev != head_tail && NodeV1->next != head_tail) && (NodeV2->prev != head_tail && NodeV2->next != head_tail) && (NodeV1->next != NodeV2 && NodeV2->prev != NodeV1)) 
         {
             Node* save_connection_prev = NodeV1->prev;
             Node* save_connection_next = NodeV1->next;
