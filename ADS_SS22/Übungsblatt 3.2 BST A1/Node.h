@@ -2,10 +2,16 @@
 class Treenode
 {
 public:
-	int item; // Daten
-	int height; // Höhe des Knoten
+	int item = 0; // Daten
+	int height = 0; // Höhe des Knoten
 	Treenode* left; // linker Nachfolgeknoten
 	Treenode* right; // rechter Nachfolgeknoten
 	Treenode() {};
-	Treenode(int key) { Treenode *newNode = new Treenode(key); }
+	Treenode(int key) 
+	{ 
+		this->item = key;
+		Treenode *newNode = new Treenode(item); 
+		newNode->left = nullptr;
+		newNode->right = nullptr;
+	}
 };

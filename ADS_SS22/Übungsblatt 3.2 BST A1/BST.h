@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Node.h"
+#include <algorithm>
+#include <queue>
 
 class BST 
 {
@@ -18,17 +20,21 @@ public:
 	};
 	~BST();
 	void insert(int key);
-	int getBSTHeight(); // Starterfunktion für die rekursive Methode und liefert die Höhe des Baumes zurück
+	int  getBSTHeight(); // Starterfunktion für die rekursive Methode und liefert die Höhe des Baumes zurück
 	void printBST(); // Ausgabe des BST in Levelorder
 	void printNiveau(int niveau); // Ausgabe aller Knoten zu einem Niveau
 	void printHeight(int height); // Ausgabe aller Knoten zu einer Höhe
 	void postOrder(Treenode* p); // Traversiert Rekursiv den BST Bottum up; möglichkeit Baum von unten nach oben zu löschen
-	void PreOrder(Treenode* k); // Top-down Ausgabe
 };
 /*
-*	Aufgabe A) 
+*	Aufgabe 1.a) 
+*		- Was benötigen wir für das Löschen aller Knoten im BST
 *	
 */
+BST::~BST()
+{
+	if (head->right != nullptr)deleteBST(head->right);
+}
 void BST::deleteBST(Treenode* p)
 {
 	if (p->left) 
@@ -45,10 +51,7 @@ void BST::deleteBST(Treenode* p)
 		delete p;
 	}
 }
-BST::~BST()
-{
-	if(head->right != nullptr)deleteBST(head->right);
-}
+
 /*
 *	Inser-Methode Hinweis:
 *	- Zu bachten sind Zwei Fälle 1) Baum Leer , 2) Baum hat einen oder mehr Knoten
@@ -58,9 +61,10 @@ BST::~BST()
 */
 void BST::insert(int key)
 {
-	Treenode *newNode = new Treenode(key);  // Initialisierung eines neuen Knoten -> Wird in den Baum eingefügt
+	Treenode *newNode = new Treenode();  // Initialisierung eines neuen Knoten -> Wird in den Baum eingefügt
 	newNode->left = nullptr;
 	newNode->right = nullptr;
+	newNode->item = key;
 
 	if (head->right == nullptr) 
 	{
@@ -96,19 +100,52 @@ void BST::insert(int key)
 
 void BST::printBST()
 {
-	Treenode* current = head->right;
-	if (current != nullptr) 
-	{
-		PreOrder(current);
-	}
+	Treenode* root = head->right;
+	int current_niv = 0; // Damit merken wir uns auf welchen Niv wir gerade stehen. S
+	std::queue<Treenode*>Node;
+	std::queue<int>niveau;
 	
-}
-void BST::PreOrder(Treenode* k)
-{
-	if (k != nullptr) 
+	if (root == nullptr) 
 	{
-		std::cout << "Knoten: " << k->item << ",";
-		PreOrder(k->left);
-		PreOrder(k->right);
+		std::cout << "Der Baum ist Leer\n";
 	}
+
+	// Baum ist nicht Leer somit Pushen wir den Knoten in die Que
+	Node.push(root);
+	niveau.push(current_niv);
+
+	while (!Node.empty())
+	{
+		std::cout << "Niveau(" << current_niv << "): ";
+		Treenode* current = Node.front();
+		Node.pop();
+
+		int prev_niv = current_niv;
+		current_niv = niveau.front(); niveau.pop();
+		if (current_niv != prev_niv) 
+		{
+			std::cout << std::endl;
+		}
+		std::cout << "(" << current->item << ") ";
+		if (current->left != nullptr) 
+		{
+			
+			Node.push(current->left);
+			niveau.push(current_niv+1);
+		}
+		if (current->right != nullptr)
+		{
+			Node.push(current->right);
+			niveau.push(current_niv+1);
+		}
+	}
+}
+int BST::getBSTHeight() 
+{
+
+	printHeight(Treenode * node, int height);
+}
+int printHeight(Treenode* node, int height) 
+{
+
 }
